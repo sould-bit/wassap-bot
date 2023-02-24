@@ -1,5 +1,6 @@
 from flask import Flask, request
 from twilio.twiml.messaging_response import MessagingResponse
+from    reminders import remember
 
 app = Flask(__name__)
 
@@ -16,19 +17,26 @@ def bot():
     # # metodo de message para captar urls , 
 
     responded = False
-    print(request.form['Body'])
-    msg.body("\u26A1")
+    
+    msg.body("\u26A1  ")
     try:
-
         if "hello" in incoming_msg:
-            msg.body("hi im ruben lets go this is options\n"" algebra \n " )
+            msg.body("hi im ruben lets go \n this is options \n \u2211 algebra \n option two \n option tree" )
             responded = True
         elif "algebra" in incoming_msg:
-            msg.body('cool go for the fucking \n 2 * 2 =')
+             answer = remember('algebra')
+             msg.body(answer + "\n now  its cool , go the fuking ")
+             print(request.form['Body'])
+             responded = True
+        elif "option two" in incoming_msg:
+            msg.body("estamos trabajando en esta funcion")
             responded = True
-        if responded == False:
-            msg.body("im sorry , i've not this option")
-    
+        elif  "option tree" in incoming_msg:
+            msg.body("estamos trabajando en esta funcion")
+            responded = True
+        else:
+            responded = False
+            msg.body("to start say hello ")
             
     except Exception as e:
         print(f'Error algo salio mal ')
